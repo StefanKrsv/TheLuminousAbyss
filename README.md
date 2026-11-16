@@ -74,3 +74,7 @@ git push origin v1.0.1
 ## Benchmark
 
 Add `?bench` to the URL to run the guided flight at a fixed 2560x1440 with GPU timestamp queries. Last measured on an RTX 3060 in Chrome 157: GPU average 8.9 ms, p99 13.5 ms, max 14.1 ms per frame.
+
+## Credits
+
+The original idea for **The Luminous Abyss** was inspired by [Abyssal Garden](https://github.com/Noniv/abyssal-garden) by [Noniv](https://github.com/Noniv). Full credit to the original creator for the concept and inspiration.
