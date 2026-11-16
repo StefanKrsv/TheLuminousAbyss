@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Check the build is under 100 kB
+        run: |
+          size=$(wc -c < index.html)
+          echo "index.html is $size bytes"
+          test "$size" -lt 100000
+      - uses: actions/upload-artifact@v4
+        with:
+          name: the-luminous-abyss
+          path: index.html
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp index.html "the-luminous-abyss-$GITHUB_REF_NAME.html"
+          gh release create "$GITHUB_REF_NAME" index.html "the-luminous-abyss-$GITHUB_REF_NAME.html" --title "The Luminous Abyss $GITHUB_REF_NAME" --generate-notes
